@@ -31,7 +31,6 @@ class DataPreprocessing:
         df_transformed = df_transformed.drop(input)
         return df_transformed
     
-    def groupeColumns(self,df:DataFrame,cols:list, output:str) -> DataFrame:
-        vectorAssembler = VectorAssembler(inputCols = cols,outputCol = output)
+    def groupeColumns(self,df:DataFrame,vectorAssembler:VectorAssembler) -> DataFrame:
         assembled_df = vectorAssembler.transform(df)
         return  assembled_df
