@@ -1,3 +1,4 @@
+from typing import List
 import pyspark
 from pyspark.sql import SparkSession, DataFrame
 from pyspark.ml.feature import StringIndexer,VectorAssembler 
@@ -16,7 +17,7 @@ class DataPreprocessing:
         else: raise Exception('Erreur, essayer encore')
         
         def fromCSV(filePath:str) -> DataFrame:
-            df = spark.read.options(header='True', inferSchema='True', delimiter=',',mode="DROPMALFORMED") \
+            df = spark.read.options(header='True', inferSchema='True', delimiter=',') \
                 .csv(filePath)
             return df
         
@@ -31,6 +32,23 @@ class DataPreprocessing:
         df_transformed = df_transformed.drop(input)
         return df_transformed
     
+    def indexerColumns(self,colums:List['str']) -> List[StringIndexer]:
+        columnsIndexed = []
+        for column in colums:
+            col=""
+            if column=="Classes":
+                col="label"
+            else:
+                col = column+"_indexed"
+            st = StringIndexer(inputCol=column,outputCol=col)
+            st.setHandleInvalid("skip")
+            columnsIndexed.append(st)
+        return columnsIndexed
+    
     def groupeColumns(self,df:DataFrame,vectorAssembler:VectorAssembler) -> DataFrame:
         assembled_df = vectorAssembler.transform(df)
-        return  assembled_df
+        return assembled_df
+    
+    def renameCol(self,df:DataFrame,exist:str,newCol:str) -> DataFrame:
+        n_df = df.withColumnRenamed(exist,newCol )
+        return n_df
