@@ -20,6 +20,6 @@ class ModelNaiveBayes:
         return predicted_df
     
     def evaluateModel(self,df:DataFrame, evaluator:MulticlassClassificationEvaluator) -> float:
-         nbaccuracy = evaluator.evaluate(df)
-         return nbaccuracy
+         accuracy = evaluator.evaluate(df)
+         return accuracy
     
