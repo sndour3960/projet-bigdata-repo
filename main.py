@@ -3,6 +3,7 @@ from preprocessing.prepare import DataPreprocessing
 from pyspark.ml.feature import StringIndexer,VectorAssembler
 from pyspark.ml import Pipeline
 from models.model import ModelNaiveBayes
+import os
 from pyspark.ml.classification import NaiveBayes
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 
@@ -13,8 +14,9 @@ print("Session démarrée")
 """
 Chargement des données
 """
-fileCSV = "Algerian_forest_fires_dataset_UPDATE.csv"
-fileJSON = "people.json"
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+fileCSV = os.path.join(ROOT_DIR, 'Algerian_forest_fires_dataset_UPDATE.csv')
+fileJSON = os.path.join(ROOT_DIR, "people.json")
 dataPrep = DataPreprocessing()
 df_l = dataPrep.createDataFrame(session,fileCSV)
 """
@@ -40,7 +42,7 @@ transformer = nb_model.train(train,nb)
 
 prediction_df = nb_model.predict(test,transformer)
 
-prediction_df.show(8)
+prediction_df.show(15)
 
 evaluator = MulticlassClassificationEvaluator(labelCol="label", predictionCol="prediction", metricName="accuracy")
 accuracy =  nb_model.evaluateModel(prediction_df,evaluator)
