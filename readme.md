@@ -9,6 +9,5 @@ Pour mettre en place notre application, nous avons les dépendances:
 
 Pour exécuter avec spark, il faut d'abord démarrer le master node  avec
 spark-class org.apache.spark.deploy.master.Master,
-
-Et exécuter avec la commande suivante :
+Activer votre environnement puis exécuter avec la commande suivante :
  spark-submit --master  adress-du-master  Chemin-projet\main.py 
